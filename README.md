@@ -4,6 +4,14 @@
 
 ## Adding ant framework
 
-## `npm install antd`
+`npm install antd`
+
+## Steps
+
+### Add Routing
+
+`npm install @types/react-router-dom`
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
