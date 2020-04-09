@@ -1,6 +1,6 @@
 ## Install apollo
 
-`npm install react-router-dom apollo-boost @apollo/react-hooks graphql apollo-cache-inmemory apollo-client apollo-link-http moment`
+`npm install react-router-dom apollo-boost @apollo/react-hooks graphql apollo-cache-inmemory apollo-client apollo-link-http apollo-fetch moment`
 
 ## Adding ant framework
 

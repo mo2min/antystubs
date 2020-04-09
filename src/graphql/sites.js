@@ -7,6 +7,7 @@ export const ALL_SITES = gql`
         _id
         name
         handle
+        stub_knol_id
       }
     }
   }

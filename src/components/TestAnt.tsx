@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Space, Button } from "antd";
+import { NavLink } from "react-router-dom";
 
-function TestAnt() {
+function TopNav() {
   const [size, setSize] = useState(8);
 
   useEffect(() => {
@@ -12,13 +13,29 @@ function TestAnt() {
   return (
     <>
       <Space size={size}>
-        <Button type="primary">Primary</Button>
-        <Button>Default</Button>
-        <Button type="dashed">Dashed</Button>
+        <NavLink className="nav-link" to="/" exact activeClassName="activeNav">
+          <Button>Sites</Button>
+        </NavLink>
+
+        <NavLink className="nav-link" to="/pages" activeClassName="activeNav">
+          <Button>Pages</Button>
+        </NavLink>
+
+        <NavLink
+          className="nav-link"
+          activeStyle={{
+            background: "red",
+            color: "white",
+          }}
+          to="/dashed"
+        >
+          <Button type="dashed">Dashed</Button>
+        </NavLink>
+
         <Button type="link">Link</Button>
       </Space>
     </>
   );
 }
 
-export default TestAnt;
+export default TopNav;
