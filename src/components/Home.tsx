@@ -2,12 +2,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { ALL_SITES } from "../graphql/sites";
 import { Card, Button } from "antd";
-import { Site, HistoricPlaceStub, SoftwareCoStub } from "../common/types";
+import {
+  Site,
+  HistoricPlaceStub,
+  SoftwareCoStub,
+  WikiResult,
+} from "../common/types";
 import { AppContext } from "../Context";
 import {
   guardHistoricPlaceStub,
   guardSoftwareCoStub,
 } from "../common/typeguards";
+import JsonPre from "./common/JsonPre";
 
 export default function Home() {
   const { data } = useQuery(ALL_SITES);
@@ -34,6 +40,7 @@ export default function Home() {
                   ... on HistoricPlaceStub {
                      historic_place {
                       title
+                      wiki_id
                       curr_area {
                         title
                       }
@@ -71,8 +78,8 @@ export default function Home() {
   return (
     <div>
       {renderSites.map((site: Site) => (
-        <Card style={{ width: 300 }} title={site.name} key={site._id}>
-          <p>{JSON.stringify(site)}</p>
+        <Card style={{ direction: "rtl" }} title={site.name} key={site._id}>
+          <JsonPre data={site} />
           {site.stub_data && guardHistoricPlaceStub(site.stub_data) && (
             <p>
               <br />
@@ -81,6 +88,49 @@ export default function Home() {
               {site.stub_data && (
                 <b>{site.stub_data.historic_place.curr_area.title}</b>
               )}
+              <br />
+              <b>WikiID: </b> {site.stub_data.historic_place.wiki_id}
+              <Button
+                onClick={async (e) => {
+                  // Get Wikidata
+                  const query = `
+SELECT ?item ?itemLabel ?inventorLabel
+WHERE 
+{
+  {?item wdt:P279 wd:Q1183543 ;
+         wdt:P61 ?inventor .}
+  UNION 
+  {?item wdt:P31 wd:Q1183543 ;
+          wdt:P61 ?inventor .}
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "ar,en". }
+}`;
+
+                  let data = await fetch(
+                    `https://query.wikidata.org/sparql?query=${encodeURIComponent(
+                      query
+                    )}`,
+                    {
+                      headers: {
+                        Accept: "application/sparql-results+json",
+                      },
+                    }
+                  );
+                  let { results } = await data.json();
+                  let castedResults = (results.bindings as any[]).map(
+                    (single) => {
+                      return {
+                        value: single.itemLabel["value"] as string,
+                        lang: single.itemLabel["xml:lang"] as string,
+                      } as WikiResult;
+                    }
+                  );
+                  castedResults.forEach((one) => {
+                    console.log(one.lang, one.value);
+                  });
+                }}
+              >
+                Wiki Data
+              </Button>
             </p>
           )}
 

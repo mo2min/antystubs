@@ -5,6 +5,7 @@ import { Card } from "antd";
 import { AppContext } from "../Context";
 import AddPage from "../components/AddPage";
 import DeletePage from "../components/pages/DeletePage";
+import JsonPre from "../components/common/JsonPre";
 
 export default function Pages() {
   const { data } = useQuery(ALL_PAGES);
@@ -16,8 +17,8 @@ export default function Pages() {
         data.allPages.data.map((page: any) => (
           <div key={page._id}>
             {page.site._id === site._id && (
-              <Card style={{ width: 300 }} title={page.title}>
-                <pre>{JSON.stringify(page)}</pre>
+              <Card title={page.title}>
+                <JsonPre data={page} />
                 <DeletePage page_id={page._id} />
               </Card>
             )}

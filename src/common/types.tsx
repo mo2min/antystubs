@@ -11,10 +11,16 @@ export type HistoricPlaceStub = {
   title: string;
   historic_place: {
     title: string;
+    wiki_id: string;
     curr_area: {
       title: string;
     };
   };
+};
+
+export type WikiResult = {
+  value: string;
+  lang: string;
 };
 
 export type Site = {

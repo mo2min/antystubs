@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "antd";
 import { useMutation } from "@apollo/react-hooks";
 import { ALL_PAGES, DELETE_PAGE } from "../../graphql/pages";
+import { Popconfirm, message } from "antd";
 
 export default function DeletePage({ page_id }: any) {
   let [deletePage] = useMutation(DELETE_PAGE, {
@@ -12,14 +13,24 @@ export default function DeletePage({ page_id }: any) {
     ],
   });
 
+  function confirm() {
+    message.success("تم الحذف");
+    deletePage({ variables: { id: page_id } });
+  }
+
+  function cancel() {
+    message.error("لم يتم الحذف");
+  }
+
   return (
-    <Button
-      onClick={(e) => {
-        deletePage({ variables: { id: page_id } });
-      }}
+    <Popconfirm
+      title="Are you sure delete this page ?"
+      onConfirm={confirm}
+      onCancel={cancel}
+      okText="Yes"
+      cancelText="No"
     >
-      {" "}
-      Delete {page_id}
-    </Button>
+      <Button danger> Delete</Button>
+    </Popconfirm>
   );
 }

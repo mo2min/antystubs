@@ -9,6 +9,7 @@ export const ALL_PAGES = gql`
         content
         site {
           _id
+          name
         }
       }
     }
