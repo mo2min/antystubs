@@ -7,6 +7,7 @@ import {
   HistoricPlaceStub,
   SoftwareCoStub,
   WikiResult,
+  WikiQueryResult,
 } from "../common/types";
 import { AppContext } from "../Context";
 import {
@@ -14,6 +15,8 @@ import {
   guardSoftwareCoStub,
 } from "../common/typeguards";
 import JsonPre from "./common/JsonPre";
+import { getClaimsQuery } from "../sparqls/stups";
+import { SPARQLQueryDispatcher } from "../wikiFetch";
 
 export default function Home() {
   const { data } = useQuery(ALL_SITES);
@@ -91,42 +94,23 @@ export default function Home() {
               <br />
               <b>WikiID: </b> {site.stub_data.historic_place.wiki_id}
               <Button
-                onClick={async (e) => {
-                  // Get Wikidata
-                  const query = `
-SELECT ?item ?itemLabel ?inventorLabel
-WHERE 
-{
-  {?item wdt:P279 wd:Q1183543 ;
-         wdt:P61 ?inventor .}
-  UNION 
-  {?item wdt:P31 wd:Q1183543 ;
-          wdt:P61 ?inventor .}
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "ar,en". }
-}`;
+                onClick={async () => {
+                  const wiki_id = guardHistoricPlaceStub(site.stub_data)
+                    ? site.stub_data.historic_place.wiki_id
+                    : "";
+                  let { results } = (await new SPARQLQueryDispatcher().query(
+                    getClaimsQuery(wiki_id, "en")
+                  )) as WikiQueryResult;
 
-                  let data = await fetch(
-                    `https://query.wikidata.org/sparql?query=${encodeURIComponent(
-                      query
-                    )}`,
-                    {
-                      headers: {
-                        Accept: "application/sparql-results+json",
-                      },
-                    }
-                  );
-                  let { results } = await data.json();
-                  let castedResults = (results.bindings as any[]).map(
-                    (single) => {
-                      return {
-                        value: single.itemLabel["value"] as string,
-                        lang: single.itemLabel["xml:lang"] as string,
-                      } as WikiResult;
-                    }
-                  );
-                  castedResults.forEach((one) => {
+                  //let castedResults =
+                  (results.bindings as any[]).forEach((single) => {
+                    console.log(single);
+                  });
+                  /*
+                  castedResults.forEach((one: WikiResult) => {
                     console.log(one.lang, one.value);
                   });
+                  */
                 }}
               >
                 Wiki Data
@@ -138,6 +122,13 @@ WHERE
             <p>
               <br /> ***
               {site.stub_data && <b>{site.stub_data.area.title} </b>}
+              <Button
+                onClick={async () => {
+                  // TODO microsoft wikidata
+                }}
+              >
+                * Wiki Data *
+              </Button>
             </p>
           )}
 

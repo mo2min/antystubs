@@ -18,6 +18,15 @@ export type HistoricPlaceStub = {
   };
 };
 
+export type WikiQueryResult = {
+  results: {
+    bindings: any[];
+  };
+  head: {
+    vars: any[];
+  };
+};
+
 export type WikiResult = {
   value: string;
   lang: string;
