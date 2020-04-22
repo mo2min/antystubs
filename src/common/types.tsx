@@ -4,6 +4,9 @@ export type SoftwareCoStub = {
   area: {
     title: string;
   };
+  softwareCompany: {
+    wiki_id: string;
+  };
 };
 
 export type HistoricPlaceStub = {
@@ -27,9 +30,14 @@ export type WikiQueryResult = {
   };
 };
 
-export type WikiResult = {
-  value: string;
-  lang: string;
+export type WikiClaimSimple = {
+  prop_id: string;
+  prop_ar: string;
+  prop_en: string;
+  value: {
+    literal: string;
+    QID: string;
+  };
 };
 
 export type Site = {

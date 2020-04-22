@@ -1,10 +1,12 @@
 import React from "react";
-import TopNav from "./components/TestAnt";
+import TopNav from "./components/TopNav";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Pages from "./pages/Pages";
 import { ContextProvider } from "./Context";
 import { Layout } from "antd";
+import SoftwareCoSPs from "./pages/SoftwareCoSPs";
+import MdEditor from "./pages/MdEditor";
 
 function App() {
   const { Header, Footer, Sider, Content } = Layout;
@@ -20,6 +22,8 @@ function App() {
             <Content>
               <Route exact path="/" component={Home} />
               <Route exact path="/pages" component={Pages} />
+              <Route exact path="/edit_page/:page_id" component={MdEditor} />
+              <Route exact path="/software_co_sps" component={SoftwareCoSPs} />
             </Content>
             <Footer>Footer</Footer>
           </Layout>

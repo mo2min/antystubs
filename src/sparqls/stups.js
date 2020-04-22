@@ -11,15 +11,11 @@ export const INOVATIONS = `
   }
 `;
 
-export const HISTORIC_PLACE = `
-`;
-
-// TODO dynamic entity id
-
 export function getClaimsQuery(entity_id, lang) {
   return ` 
     ## Get Entity Claims
-    SELECT ?prop ?pValLabel ?pStmnt ?pStmntLabel {
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?prop ?pValLabel ?pStmnt ?pStmntLabel ?rdfProp {
       VALUES (?q) {(wd:${entity_id})}
       
       ?q ?prop ?statement .
@@ -27,8 +23,12 @@ export function getClaimsQuery(entity_id, lang) {
       
       ?pVal wikibase:claim ?prop.
       ?pVal wikibase:statementProperty ?ps.
+      ?pVal rdfs:label ?rdfProp.
       
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang}" }
+      filter(lang(?rdfProp) = 'en' )
+      SERVICE wikibase:label { 
+        bd:serviceParam wikibase:language "${lang}" .
+      }
     } 
 `;
 }

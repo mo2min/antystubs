@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button, Input } from "antd";
 import { useMutation } from "@apollo/react-hooks";
-import { ALL_PAGES, CREATE_PAGE } from "../graphql/pages";
+import { ALL_PAGES, CREATE_PAGE } from "../../graphql/pages";
 
 const layout = {
   labelCol: { span: 4 },

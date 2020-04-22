@@ -23,6 +23,14 @@ function TopNav() {
 
         <NavLink
           className="nav-link"
+          to="/software_co_sps"
+          activeClassName="activeNav"
+        >
+          <Button>Software Co & SPs</Button>
+        </NavLink>
+
+        <NavLink
+          className="nav-link"
           activeStyle={{
             background: "red",
             color: "white",

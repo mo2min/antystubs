@@ -34,8 +34,18 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const neo4jLink = createHttpLink({
+  uri: "http://localhost:4100/graphql",
+});
+
+const linkSplitter = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "neo4j",
+  neo4jLink,
+  httpLink
+);
+
 const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, authLink, httpLink]),
+  link: ApolloLink.from([errorLink, authLink, linkSplitter]),
   cache: new InMemoryCache(),
 });
 

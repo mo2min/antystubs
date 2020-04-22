@@ -6,11 +6,15 @@
 
 `npm install antd`
 
-## Steps
-
-### Add Routing
+## Add Routing
 
 `npm install @types/react-router-dom`
+
+## heuristic fragment matching
+
+- See https://www.apollographql.com/docs/react/data/fragments/#fragments-on-unions-and-interfaces
+- https://medium.com/@jacky_ttt/day121-warning-heuristic-fragment-matching-going-on-8208b584cb5e
+- https://github.com/apollographql/apollo-client/issues/5423
 
 ---
 
